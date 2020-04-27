@@ -32,9 +32,10 @@ import org.springframework.context.annotation.PropertySource;
 
 import java.util.Map;
 
-import static org.apache.dubbo.config.spring.util.BeanRegistrar.hasAlias;
+import static com.alibaba.spring.util.BeanRegistrar.hasAlias;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * {@link EnableDubboConfig} Test
@@ -81,7 +82,7 @@ public class EnableDubboConfigTest {
         Assertions.assertEquals("netty", consumerConfig.getClient());
 
         // asserts aliases
-        assertTrue(hasAlias(context, "org.apache.dubbo.config.RegistryConfig#0", "zookeeper"));
+        assertFalse(hasAlias(context, "org.apache.dubbo.config.RegistryConfig#0", "zookeeper"));
         assertFalse(hasAlias(context, "org.apache.dubbo.config.MonitorConfig#0", "zookeeper"));
     }
 
@@ -106,9 +107,8 @@ public class EnableDubboConfigTest {
         Map<String, ProtocolConfig> protocolConfigs = context.getBeansOfType(ProtocolConfig.class);
 
         for (Map.Entry<String, ProtocolConfig> entry : protocolConfigs.entrySet()) {
-            String beanName = entry.getKey();
             ProtocolConfig protocol = entry.getValue();
-            Assert.assertEquals(beanName, protocol.getName());
+            Assert.assertEquals(protocol, context.getBean(protocol.getName(), ProtocolConfig.class));
         }
 
         // asserts aliases

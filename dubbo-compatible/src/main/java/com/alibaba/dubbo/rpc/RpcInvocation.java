@@ -179,14 +179,14 @@ public class RpcInvocation implements Invocation, Serializable {
         if (attachments == null) {
             return null;
         }
-        return attachments.get(key);
+        return (String) attachments.get(key);
     }
 
     public String getAttachment(String key, String defaultValue) {
         if (attachments == null) {
             return defaultValue;
         }
-        String value = attachments.get(key);
+        String value = (String) attachments.get(key);
         if (value == null || value.length() == 0) {
             return defaultValue;
         }
